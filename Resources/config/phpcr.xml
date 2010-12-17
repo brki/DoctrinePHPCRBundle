@@ -65,7 +65,7 @@
 
         <service id="doctrine.phpcr_odm.metadata_driver.annotation.reader" class="%doctrine.phpcr_odm.metadata.annotation_reader.class%">
             <call method="setAnnotationNamespaceAlias">
-                <argument>Doctrine\ORM\Mapping\</argument>
+                <argument>Doctrine\ODM\PHPCR\Mapping\</argument>
                 <argument>phpcr</argument>
             </call>
         </service>
