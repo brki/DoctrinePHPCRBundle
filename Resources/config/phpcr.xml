@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://www.symfony-project.org/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="doctrine.phpcr_odm.default_entity_manager">default</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata_cache_driver">array</parameter>
+        <parameter key="doctrine.phpcr_odm.query_cache_driver">array</parameter>
+        <parameter key="doctrine.phpcr_odm.result_cache_driver">array</parameter>
+        <parameter key="doctrine.phpcr_odm.configuration.class">Doctrine\ODM\PHPCR\Configuration</parameter>
+        <parameter key="doctrine.phpcr_odm.document_manager.class">Doctrine\ODM\PHPCR\DocumentManager</parameter>
+
+        <!-- proxies -->
+<!--
+        <parameter key="doctrine.phpcr_odm.proxy_namespace">Proxies</parameter>
+        <parameter key="doctrine.phpcr_odm.proxy_dir">%kernel.cache_dir%/doctrine/orm/Proxies</parameter>
+        <parameter key="doctrine.phpcr_odm.auto_generate_proxy_classes">true</parameter>
+ -->
+         <!-- cache -->
+<!--
+        <parameter key="doctrine.phpcr_odm.cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.memcache.class">Doctrine\Common\Cache\MemcacheCache</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.memcache_host">localhost</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.memcache_port">11211</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.memcache_instance.class">Memcache</parameter>
+        <parameter key="doctrine.phpcr_odm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
+ -->
+        <!-- metadata -->
+        <parameter key="doctrine.phpcr_odm.metadata.driver_chain.class">Doctrine\ODM\PHPCR\Mapping\Driver\DriverChain</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata.annotation.class">Doctrine\ODM\PHPCR\Mapping\Driver\AnnotationDriver</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata.annotation_reader.class">Doctrine\Common\Annotations\AnnotationReader</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata.annotation_default_namespace">Doctrine\ODM\PHPCR\Mapping\</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata.xml.class">Doctrine\ODM\PHPCR\Mapping\Driver\XmlDriver</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata.yml.class">Doctrine\ODM\PHPCR\Mapping\Driver\YamlDriver</parameter>
+
+        <!-- directories -->
+        <parameter key="doctrine.phpcr_odm.metadata_driver.mapping_dirs" type="collection"></parameter>
+        <parameter key="doctrine.phpcr_odm.xml_mapping_dirs">%doctrine.phpcr_odm.metadata_driver.mapping_dirs%</parameter>
+        <parameter key="doctrine.phpcr_odm.yml_mapping_dirs">%doctrine.phpcr_odm.metadata_driver.mapping_dirs%</parameter>
+        <parameter key="doctrine.phpcr_odm.metadata_driver.document_dirs" type="collection"></parameter>
+    </parameters>
+
+    <services>
+        <service id="doctrine.phpcr_odm.configuration" class="%doctrine.phpcr_odm.configuration.class%">
+            <call method="setMetadataDriverImpl">
+                <argument type="service" id="doctrine.phpcr_odm.metadata_driver.annotation" />
+            </call>
+            <call method="setPhpcrSession">
+                <argument type="service" id="jackalope.session" />
+            </call>
+        </service>
+
+        <service id="doctrine.phpcr_odm.document_manager" class="%doctrine.phpcr_odm.document_manager.class%">
+            <argument type="service" id="doctrine.phpcr_odm.configuration" />
+        </service>
+
+        <!--- Annotation Metadata Driver Service -->
+        <service id="doctrine.phpcr_odm.metadata_driver.annotation" class="%doctrine.phpcr_odm.metadata.annotation.class%">
+            <argument type="service" id="doctrine.phpcr_odm.metadata_driver.annotation.reader" />
+            <argument>%doctrine.phpcr_odm.metadata_driver.document_dirs%</argument>
+        </service>
+
+        <service id="doctrine.phpcr_odm.metadata_driver.annotation.reader" class="%doctrine.phpcr_odm.metadata.annotation_reader.class%">
+            <call method="setAnnotationNamespaceAlias">
+                <argument>Doctrine\ORM\Mapping\</argument>
+                <argument>phpcr</argument>
+            </call>
+        </service>
+
+        <!--- XML Metadata Driver Service -->
+        <service id="doctrine.phpcr_odm.metadata_driver.xml" class="%doctrine.phpcr_odm.metadata.xml.class%">
+            <argument>%doctrine.phpcr_odm.metadata_driver.mapping_dirs%</argument>
+        </service>
+
+        <!--- YAML Metadata Driver Service -->
+        <service id="doctrine.phpcr_odm.metadata_driver.yml" class="%doctrine.phpcr_odm.metadata.yml.class%">
+            <argument>%doctrine.phpcr_odm.metadata_driver.mapping_dirs%</argument>
+        </service>
+    </services>
+</container>

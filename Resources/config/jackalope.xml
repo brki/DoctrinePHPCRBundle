@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://www.symfony-project.org/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="jackalope.loader.class">Bundle\DoctrinePHPCRBundle\JackalopeLoader</parameter>
+        <parameter key="jackalope.repository.class">Jackalope\Repository</parameter>
+        <parameter key="jackalope.credentials.class">PHPCR\SimpleCredentials</parameter>
+        <parameter key="jackalope.options.url">null</parameter>
+        <parameter key="jackalope.options.transport">null</parameter>
+        <parameter key="jackalope.options.user">null</parameter>
+        <parameter key="jackalope.options.pass">null</parameter>
+        <parameter key="jackalope.options.workspace">null</parameter>
+    </parameters>
+
+    <services>
+        <service id="jackalope.loader" class="%jackalope.loader.class%">
+            <argument type="service" id="jackalope.repository" />
+            <argument type="collection">
+                <argument key="url">%jackalope.options.url%</argument>
+                <argument key="transport">%jackalope.options.transport%</argument>
+                <argument key="user">%jackalope.options.user%</argument>
+                <argument key="pass">%jackalope.options.pass%</argument>
+                <argument key="workspace">%jackalope.options.workspace%</argument>
+            </argument>
+        </service>
+
+        <service id="jackalope.repository" class="%jackalope.repository.class%">
+            <argument>%jackalope.options.url%</argument>
+            <argument>%jackalope.options.transport%</argument>
+        </service>
+
+        <service id="jackalope.credentials" class="%jackalope.credentials.class%">
+            <argument>%jackalope.options.user%</argument>
+            <argument>%jackalope.options.pass%</argument>
+        </service>
+
+        <service id="jackalope.session" class="%jackalope.repository.class%" factory-service="jackalope.repository" factory-method="login">
+            <argument type="service" id="jackalope.credentials" />
+            <argument>%jackalope.options.workspace%</argument>
+        </service>
+    </services>
+</container>
