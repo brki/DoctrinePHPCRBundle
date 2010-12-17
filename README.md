@@ -65,14 +65,14 @@ Usage
 * To get a Jackalope\Session instance, call getPhpcrSession() on the DocumentManager
 * Store your documents with a path:
 
-    $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
-    $dm->persist($document, '/document_path');
-    $dm->flush();
+      $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
+      $dm->persist($document, '/document_path');
+      $dm->flush();
 
 * Load a document by path:
 
-    $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
-    $user = $dm->getRepository('Application\YourBundle\Document\User')->find('/bob');
+      $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
+      $user = $dm->getRepository('Application\YourBundle\Document\User')->find('/bob');
 
 Contributors
 ============
