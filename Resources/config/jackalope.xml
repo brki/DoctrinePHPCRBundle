@@ -8,6 +8,7 @@
         <parameter key="jackalope.loader.class">Bundle\DoctrinePHPCRBundle\JackalopeLoader</parameter>
         <parameter key="jackalope.repository.class">Jackalope\Repository</parameter>
         <parameter key="jackalope.credentials.class">PHPCR\SimpleCredentials</parameter>
+        <parameter key="jackalope.factory.class">Jackalope\Factory</parameter>
         <parameter key="jackalope.options.url">null</parameter>
         <parameter key="jackalope.options.transport">null</parameter>
         <parameter key="jackalope.options.user">null</parameter>
@@ -28,9 +29,12 @@
         </service>
 
         <service id="jackalope.repository" class="%jackalope.repository.class%">
+            <argument type="service" id="jackalope.factory" />
             <argument>%jackalope.options.url%</argument>
             <argument>%jackalope.options.transport%</argument>
         </service>
+
+        <service id="jackalope.factory" class="%jackalope.factory.class%" />
 
         <service id="jackalope.credentials" class="%jackalope.credentials.class%">
             <argument>%jackalope.options.user%</argument>
