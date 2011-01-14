@@ -18,7 +18,7 @@
 
     <services>
         <service id="jackalope.loader" class="%jackalope.loader.class%">
-            <argument type="service" id="jackalope.repository" />
+            <argument type="service" id="service_container" />
             <argument type="collection">
                 <argument key="url">%jackalope.options.url%</argument>
                 <argument key="transport">%jackalope.options.transport%</argument>

@@ -4,30 +4,23 @@ namespace Bundle\DoctrinePHPCRBundle;
 
 class JackalopeLoader
 {
-    protected $repository;
+    protected $container;
     protected $session;
 
     protected $config;
 
-    public function __construct($repository, $config)
+    public function __construct($container, $config)
     {
-        $this->repository = $repository;
+        $this->container = $container;
         $this->config = $config;
     }
 
     public function getSession()
     {
         if (!$this->session) {
-            $this->session = $this->login();
+            $this->session = $this->container->get('jackalope.session');
         }
         return $this->session;
-    }
-
-    public function login(array $config = array())
-    {
-        $config = array_merge($this->config, $config);
-        $credentials = new \PHPCR\SimpleCredentials($config['user'], $config['pass']);
-        return $this->repository->login($credentials, $config['workspace']);
     }
 
     /**
