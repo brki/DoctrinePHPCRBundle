@@ -32,9 +32,13 @@ class JackalopeLoader
     public function initPath($path)
     {
         $node = $this->getSession()->getRootNode();
-        $nodes = explode('/', $path);
-        foreach($nodes as $subpath) {
-            $node = $node->addNode($subpath);
+        $nodes = explode('/', trim($path, '/'));
+        foreach ($nodes as $subpath) {
+            if ($node->hasNode($subpath)) {
+                $node = $node->getNode($subpath);
+            } else {
+                $node = $node->addNode($subpath);
+            }
         }
         return $node;
     }
