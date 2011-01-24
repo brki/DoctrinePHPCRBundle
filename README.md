@@ -8,7 +8,7 @@ Installation
 
  1. Add the DoctrinePHPCRBundle and the jackalope library to your project as git submodules:
 
-        $ git submodule add git://github.com/Seldaek/DoctrinePHPCRBundle.git src/Bundle/JackalopeBundle
+        $ git submodule add git://github.com/Seldaek/DoctrinePHPCRBundle.git src/Bundle/DoctrinePHPCRBundle
         $ git submodule add git://github.com/Seldaek/phpcr-odm.git src/vendor/doctrine-phpcr
         $ cd src/vendor/doctrine-phpcr
         $ git submodule update --recursive --init
