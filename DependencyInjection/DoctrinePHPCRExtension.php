@@ -15,8 +15,7 @@ class DoctrinePHPCRExtension extends Extension
      */
     public function configLoad(array $configs, ContainerBuilder $container)
     {
-        foreach($configs as $config)
-        {
+        foreach($configs as $config) {
           if (!array_key_exists('backend', $config)) {
               throw new \UnexpectedValueException('The phpcr.config entry expects a backend subnode');
           }
