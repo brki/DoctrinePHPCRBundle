@@ -4,6 +4,7 @@ namespace Bundle\DoctrinePHPCRBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Resource\FileResource;
 
@@ -33,7 +34,7 @@ class DoctrinePHPCRExtension extends Extension
     public function loadBackendDefaults(array $config, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('jackalope.repository')) {
-            $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('jackalope.xml');
         }
 
@@ -59,7 +60,7 @@ class DoctrinePHPCRExtension extends Extension
     public function loadOdmDefaults(array $config, ContainerBuilder $container)
     {
         if (!$container->hasDefinition('doctrine.phpcr.document_manager')) {
-            $loader = new XmlFileLoader($container, __DIR__.'/../Resources/config');
+            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
             $loader->load('phpcr.xml');
         }
 
