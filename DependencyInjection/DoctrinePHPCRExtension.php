@@ -14,15 +14,19 @@ class DoctrinePHPCRExtension extends Extension
      * @param array $config An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function configLoad(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
-        foreach($configs as $config) {
-          if (!array_key_exists('backend', $config)) {
-              throw new \UnexpectedValueException('The phpcr.config entry expects a backend subnode');
-          }
-          $this->loadBackendDefaults($config['backend'], $container);
-          $this->loadOdmDefaults($config, $container);
+        $config = array();
+        foreach ($configs as $conf) {
+            $config = array_merge($config, $conf);
         }
+
+        if (!array_key_exists('backend', $config)) {
+            throw new \UnexpectedValueException('The DoctrinePHPCRBundle load entry expects a backend subnode');
+        }
+
+        $this->loadBackendDefaults($config['backend'], $container);
+        $this->loadOdmDefaults($config, $container);
     }
 
     /**
@@ -112,6 +116,6 @@ class DoctrinePHPCRExtension extends Extension
 
     public function getAlias()
     {
-        return 'phpcr';
+        return 'doctrine_phpcr';
     }
 }
