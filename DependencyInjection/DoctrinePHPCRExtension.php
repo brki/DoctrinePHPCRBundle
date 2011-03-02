@@ -2,7 +2,8 @@
 
 namespace Bundle\DoctrinePHPCRBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -16,14 +17,9 @@ class DoctrinePHPCRExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $config = array();
-        foreach ($configs as $conf) {
-            $config = array_merge($config, $conf);
-        }
-
-        if (!array_key_exists('backend', $config)) {
-            throw new \UnexpectedValueException('The DoctrinePHPCRBundle load entry expects a backend subnode');
-        }
+        $processor = new Processor();
+        $configuration = new Configuration();
+        $config = $processor->process($configuration->getConfigTree(), $configs);
 
         $this->loadBackendDefaults($config['backend'], $container);
         $this->loadOdmDefaults($config, $container);
@@ -37,22 +33,14 @@ class DoctrinePHPCRExtension extends Extension
      */
     public function loadBackendDefaults(array $config, ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('jackalope.repository')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('jackalope.xml');
-        }
-
-        if (!isset($config['workspace'])) {
-            throw new \Exception('Jackalope\'s workspace parameter is mandatory');
-        }
-
         $options = array();
         foreach (array('url', 'user', 'pass', 'workspace', 'transport') as $var) {
-            if (isset($config[$var])) {
-                $options[$var] = $config[$var];
-                $container->setParameter('jackalope.options.'.$var, $config[$var]);
-            }
+            $options[$var] = $config[$var];
+            $container->setParameter('jackalope.options.'.$var, $config[$var]);
         }
+
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('jackalope.xml');
     }
 
     /**
@@ -63,10 +51,8 @@ class DoctrinePHPCRExtension extends Extension
      */
     public function loadOdmDefaults(array $config, ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('doctrine.phpcr.document_manager')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('phpcr.xml');
-        }
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('phpcr.xml');
 
         $container->setParameter('doctrine.phpcr_odm.metadata_driver.mapping_dirs', $this->findBundleSubpaths('Resources/config/doctrine/metadata/odm', $container));
         $container->setParameter('doctrine.phpcr_odm.metadata_driver.document_dirs', $this->findBundleSubpaths('Document', $container));
@@ -97,21 +83,6 @@ class DoctrinePHPCRExtension extends Extension
             }
         }
         return $dirs;
-    }
-
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
-    {
-        return __DIR__.'/../Resources/config/schema';
-    }
-
-    public function getNamespace()
-    {
-        return 'http://www.symfony-project.org/schema/dic/doctrine-phpcr-odm';
     }
 
     public function getAlias()

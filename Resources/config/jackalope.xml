@@ -9,11 +9,6 @@
         <parameter key="jackalope.repository.class">Jackalope\Repository</parameter>
         <parameter key="jackalope.credentials.class">PHPCR\SimpleCredentials</parameter>
         <parameter key="jackalope.factory.class">Jackalope\Factory</parameter>
-        <parameter key="jackalope.options.url">null</parameter>
-        <parameter key="jackalope.options.transport">null</parameter>
-        <parameter key="jackalope.options.user">null</parameter>
-        <parameter key="jackalope.options.pass">null</parameter>
-        <parameter key="jackalope.options.workspace">null</parameter>
     </parameters>
 
     <services>
