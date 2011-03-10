@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DoctrinePHPCRBundle;
+namespace Symfony\CMF\Bundle\DoctrinePHPCRBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerInterface;

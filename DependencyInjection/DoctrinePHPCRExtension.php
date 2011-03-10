@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DoctrinePHPCRBundle\DependencyInjection;
+namespace Symfony\CMF\Bundle\DoctrinePHPCRBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;

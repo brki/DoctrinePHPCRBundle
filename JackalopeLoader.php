@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DoctrinePHPCRBundle;
+namespace Symfony\CMF\Bundle\DoctrinePHPCRBundle;
 
 class JackalopeLoader
 {

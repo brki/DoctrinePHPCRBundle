@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DoctrinePHPCRBundle\DependencyInjection;
+namespace Symfony\CMF\Bundle\DoctrinePHPCRBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
