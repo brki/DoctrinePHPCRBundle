@@ -26,15 +26,19 @@ class Configuration
         $rootNode = $treeBuilder->root('doctrine_phpcr', 'array');
 
         $rootNode
-            ->arrayNode('backend')
-                ->cannotBeEmpty()
-                ->addDefaultsIfNotSet()
-                    ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
-                    ->scalarNode('user')->defaultNull()->end()
-                    ->scalarNode('pass')->defaultNull()->end()
-                    ->scalarNode('transport')->defaultNull()->end()
-                ->end();
+            ->children()
+                ->arrayNode('backend')
+                    ->addDefaultsIfNotSet()
+                    ->cannotBeEmpty()
+                    ->children()
+                        ->scalarNode('workspace')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('url')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('user')->defaultNull()->end()
+                        ->scalarNode('pass')->defaultNull()->end()
+                        ->scalarNode('transport')->defaultNull()->end()
+                    ->end()
+                ->end()
+            ->end();
 
         return $treeBuilder->buildTree();
     }
