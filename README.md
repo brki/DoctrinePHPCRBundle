@@ -74,6 +74,8 @@ Usage
       $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
       $user = $dm->getRepository('Application\YourBundle\Document\User')->find('/bob');
 
+For more on how to define documents and other non-symfony-specific tasks, see the doc in the phpcr-odm project: https://github.com/doctrine/phpcr-odm/
+
 Contributors
 ============
 
