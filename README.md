@@ -6,11 +6,11 @@ Provides basic integration of the Doctrine PHPCR ODM into Symfony projects
 Installation
 ============
 
- 1. Add the DoctrinePHPCRBundle and the jackalope library to your project as git submodules:
+ 1. Add the DoctrinePHPCRBundle and the doctrine-phpcr-odm library to your project as git submodules:
 
-        $ git submodule add git://github.com/Seldaek/DoctrinePHPCRBundle.git src/Bundle/DoctrinePHPCRBundle
-        $ git submodule add git://github.com/Seldaek/phpcr-odm.git src/vendor/doctrine-phpcr
-        $ cd src/vendor/doctrine-phpcr
+        $ git submodule add git://github.com/symfony-cmf/DoctrinePHPCRBundle.git vendor/bundles/Symfony/Cmf/DoctrinePHPCRBundle
+        $ git submodule add git://github.com/doctrine/phpcr-odm.git vendor/doctrine-phpcr-odm
+        $ cd vendor/doctrine-phpcr-odm
         $ git submodule update --recursive --init
 
  2. Add the bundle to your application kernel:
@@ -20,7 +20,7 @@ Installation
         {
             return array(
                 // ...
-                new Bundle\DoctrinePHPCRBundle\DoctrinePHPCRBundle(),
+                new Symfony\Cmf\Bundle\DoctrinePHPCRBundle\DoctrinePHPCRBundle(),
                 // ...
             );
         }
@@ -30,16 +30,16 @@ Installation
         // src/autoload.php
         $loader->registerNamespaces(array(
             // ...
-            'Jackalope'                      => $vendorDir.'/doctrine-phpcr/lib/vendor/jackalope/src',
-            'PHPCR'                          => $vendorDir.'/doctrine-phpcr/lib/vendor/jackalope/lib/phpcr/src',
-            'Doctrine\\ODM\\PHPCR'           => $vendorDir.'/doctrine-phpcr/lib',
+            'Jackalope'                      => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/src',
+            'PHPCR'                          => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/lib/phpcr/src',
+            'Doctrine\\ODM\\PHPCR'           => $vendorDir.'/doctrine-phpcr-odm/lib',
             // ...
         ));
 
  4. Add the bundle to your application config:
 
         # app/config/config.yml
-        phpcr.config:
+        doctrine_phpcr:
             backend:
                 url: http://localhost:8080/server/
                 workspace: foo
@@ -48,7 +48,7 @@ Installation
                 transport:
 
         # app/config/config.xml
-        <phpcr:config>
+        <doctrine_phpcr:config>
             <backend
                 url="http://localhost:8080/server/"
                 workspace="foo"
@@ -56,17 +56,17 @@ Installation
                 pass=""
                 transport=""
             />
-        </phpcr:config>
+        </doctrine_phpcr:config>
 
 Usage
 =====
 
 * Use the `doctrine.phpcr_odm.document_manager` service to get the DocumentManager instance
-* To get a Jackalope\Session instance, call getPhpcrSession() on the DocumentManager
+* To get a PHPCR\SessionInterface instance, call getPhpcrSession() on the DocumentManager
 * Store your documents with a path:
 
       $dm = $this->container->get('doctrine.phpcr_odm.document_manager');
-      $dm->persist($document, '/document_path');
+      $dm->persist($document, '/document_path');  //TODO: this is subject to change. we probably will use the @Path property to know where to store a document
       $dm->flush();
 
 * Load a document by path:
@@ -78,3 +78,5 @@ Contributors
 ============
 
 - Jordi Boggiano <j.boggiano@seld.be>
+- Lukas Kahwe Smith <smith@pooteeweet.org>
+- David Buchmann <mail@davidbu.ch>
