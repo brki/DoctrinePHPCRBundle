@@ -20,7 +20,7 @@ Installation
         {
             return array(
                 // ...
-                new Symfony\Cmf\Bundle\DoctrinePHPCRBundle\DoctrinePHPCRBundle(),
+                new Symfony\Bundle\DoctrinePHPCRBundle\DoctrinePHPCRBundle(),
                 // ...
             );
         }
@@ -30,9 +30,10 @@ Installation
         // src/autoload.php
         $loader->registerNamespaces(array(
             // ...
-            'Jackalope'                      => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/src',
-            'PHPCR'                          => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/lib/phpcr/src',
-            'Doctrine\\ODM\\PHPCR'           => $vendorDir.'/doctrine-phpcr-odm/lib',
+            'Jackalope'                             => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/src',
+            'PHPCR'                                 => $vendorDir.'/doctrine-phpcr-odm/lib/vendor/jackalope/lib/phpcr/src',
+            'Doctrine\\ODM\\PHPCR'                  => $vendorDir.'/doctrine-phpcr-odm/lib',
+            'Symfony\\Bundle\\DoctrinePHPCRBundle'  => $vendorDir.'/bundles/',
             // ...
         ));
 
