@@ -11,6 +11,7 @@
         <parameter key="doctrine.phpcr_odm.result_cache_driver">array</parameter>
         <parameter key="doctrine.phpcr_odm.configuration.class">Doctrine\ODM\PHPCR\Configuration</parameter>
         <parameter key="doctrine.phpcr_odm.document_manager.class">Doctrine\ODM\PHPCR\DocumentManager</parameter>
+        <parameter key="doctrine.phpcr_odm.event_manager_class">Doctrine\Common\EventManager</parameter>
 
         <!-- proxies -->
 <!--
@@ -55,6 +56,7 @@
 
         <service id="doctrine.phpcr_odm.document_manager" class="%doctrine.phpcr_odm.document_manager.class%">
             <argument type="service" id="doctrine.phpcr_odm.configuration" />
+            <argument type="service" id="doctrine.phpcr_odm.default_event_manager" />
         </service>
 
         <!--- Annotation Metadata Driver Service -->

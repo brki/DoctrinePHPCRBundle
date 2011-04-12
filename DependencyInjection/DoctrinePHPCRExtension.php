@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\DependencyInjection\Definition;
 
 class DoctrinePHPCRExtension extends Extension
 {
@@ -23,6 +24,7 @@ class DoctrinePHPCRExtension extends Extension
 
         $this->loadBackendDefaults($config['backend'], $container);
         $this->loadOdmDefaults($config, $container);
+        $this->createEventManagerDefinition($container);
     }
 
     /**
@@ -56,6 +58,23 @@ class DoctrinePHPCRExtension extends Extension
 
         $container->setParameter('doctrine.phpcr_odm.metadata_driver.mapping_dirs', $this->findBundleSubpaths('Resources/config/doctrine/metadata/odm', $container));
         $container->setParameter('doctrine.phpcr_odm.metadata_driver.document_dirs', $this->findBundleSubpaths('Document', $container));
+    }
+
+    /**
+     * Create the default event manager definition.
+     *
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     */
+    protected function createEventManagerDefinition($container)
+    {
+        // for now, there is only one connection, so there will only be a 'default' event manager.
+        $eventManagerId = 'doctrine.phpcr_odm.default_event_manager';
+        if (!$container->hasDefinition($eventManagerId)) {
+            $eventManagerDef = new Definition('%doctrine.phpcr_odm.event_manager_class%');
+            $eventManagerDef->addTag('doctrine.phpcr_odm.event_manager');
+            $eventManagerDef->setPublic(true);
+            $container->setDefinition($eventManagerId, $eventManagerDef);
+        }
     }
 
     /**
